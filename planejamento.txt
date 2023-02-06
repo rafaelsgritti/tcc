@@ -1,0 +1,27 @@
+Backend - NODEJS + EXPRESS + PRISMA + MYSQL
+    API REST
+    Banco de Dados
+
+Frontend - HTML + CSS + BOOTSTRAP + JAVASCRIPT (fetch API)
+    Páginas (bootstrap)
+    Chamadas pra API
+
+
+Sistema: CRUD (create, read, update, delete)
+    Gerar senha - Front
+        Tela com botão para gerar senha de acordo com o serviço cadastrado
+        vai enviar uma requisicao para o back para gerar uma senha
+
+    Impressão de senha - Back
+        
+    Chamar senha (guiche) - Front
+        tela onde o atendente chama a senha que está na fila
+        terá uma lista com as senhas esperando em cada serviço e um botão para chamar a próxima senha
+
+    Mostrar senha (painel) - Front
+        tela que mostra a senha para o público
+        já tem pronto
+
+    Gerenciamento sistema (administrador) - Front
+        tela para o administrador cadastrar os guiches, serviços e paineis e gerar relatórios
+        terá uma parte para cada funcionalidade
