@@ -1,0 +1,11 @@
+###
+POST http://localhost/api/senha/chamar HTTP/1.1
+Content-Type: application/json
+
+{
+    "id": 2,
+    "guiche": 1
+}
+
+###
+http://localhost/api/senha HTTP/1.1
