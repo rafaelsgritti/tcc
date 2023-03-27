@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model guiche {
+  id            Int             @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  nome          String          @db.VarChar(45)
+  numero        String          @db.VarChar(45)
+  painel_chamar painel_chamar[]
+}
+
+model painel_chamar {
+  id        Int    @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  guiche_id Int
+  senha_id  Int
+  guiche    guiche @relation(fields: [guiche_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "guiche")
+  senha     senha  @relation(fields: [senha_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "senha")
+
+  @@index([guiche_id], map: "guiche_idx")
+  @@index([senha_id], map: "senha_idx")
+}
+
+model senha {
+  id            Int             @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  numero        Int
+  prioritario   Int             @default(0) @db.TinyInt
+  criada        DateTime        @default(now()) @db.DateTime(0)
+  time_chamada  DateTime?       @db.DateTime(0)
+  chamada       Boolean?        @default(false)
+  painel_chamar painel_chamar[]
+}
+
+model user {
+  id       Int    @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  nome     String @db.VarChar(45)
+  username String @unique(map: "username_UNIQUE") @db.VarChar(45)
+  password String @db.VarChar(255)
+  role     Int    @default(2)
+}

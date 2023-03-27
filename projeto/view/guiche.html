@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guichê - Atendimento</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <script src="./js/bootstrap.bundle.min.js" defer></script>
+    <script src="./js/guiche.js" defer></script>
+    <script src="./js/moment.js"></script>
+</head>
+<body>
+    <div class="m-auto text-center">
+        <h2>Ultima chamada: </h2>
+    </div>
+    <div class="w-75 m-auto mt-5">
+        <div class="d-flex justify-content-between">
+            <h3>Fila de Senhas:</h3>
+            <div>
+                <button type="button" class="btn btn-primary">Chamar</button>
+                <button type="button" class="btn btn-danger">Rechamar</button>
+            </div>
+        </div>
+        <table class="table table-striped align-middle table-bordered" id="tabelaSenhas">
+            <thead>
+                <tr>
+                    <th>Senha</th>
+                    <th>Hora Criada</th>
+                    <th>Tempo espera</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                    
+                </tfoot>
+        </table>
+    </div>
+    <div onclick="limparguiche()"><a>Limpar guiche</a></div>
+</body>
+</html>
