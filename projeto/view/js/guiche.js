@@ -32,17 +32,20 @@ function getGuiches(){
 
 
 function getSenhas(){
+    let htmlFinal = ''
     fetch('/api/senha/fila').then(res => res.json()).then(data => {
         let tabelaSenhas = document.getElementById('tabelaSenhas')
         data.forEach(senha => {
-            let criada = moment(senha.criada.replace('Z',''))
-            let html = `<tr>
-            <td>${senha.id}</td>
+            let criada = moment(senha.criada)
+            let diff = moment().diff(criada,'minutes')
+            let html = `<tr data-id="${senha.id}" data-numero="${senha.numero}">
+            <td>${senha.numero} ${senha.prioritario ? 'Prioritário' : 'Normal'}</td>
             <td>${criada.format('LT')}</td>
-            <td>${moment().diff(criada,'minutes')} minutos</td>
+            <td>${diff} ${parseInt(diff)>1 ? 'minutos' : 'minuto'}</td>
         </tr>`
-        tabelaSenhas.tBodies[0].innerHTML += html
+        htmlFinal += html
         });
+        tabelaSenhas.tBodies[0].innerHTML = htmlFinal
     })
 }
 
@@ -53,3 +56,24 @@ function limparguiche(){
     window.location.reload()
     }
 }
+
+window.setInterval(getSenhas, 1000)
+
+btChamar.addEventListener('click', () => {
+    let idSenha = tabelaSenhas.tBodies[0].rows[0].dataset.id
+    let numeroSenha = tabelaSenhas.tBodies[0].rows[0].dataset.numero
+    fetch('/api/senha/chamar', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            id: parseInt(idSenha),
+            guiche: parseInt(escolhido)
+        })
+    }).then(res => res.text()).then(data => {
+        getSenhas()
+    })
+    document.getElementById('senhaAtual').innerText = numeroSenha
+    document.removeChild(tabelaSenhas.tBodies[0].rows[0])
+})

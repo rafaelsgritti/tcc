@@ -8,9 +8,13 @@ router.get('/fila', async (req, res) => {
         where:{
             chamada: false,
         },
-        orderBy:{
+        orderBy:[
+        {
+            prioritario: 'desc'
+        },    
+        {
             id: 'asc'
-        },
+        }] 
     })
     res.send(senhas)
 })
