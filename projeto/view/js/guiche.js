@@ -75,5 +75,5 @@ btChamar.addEventListener('click', () => {
         getSenhas()
     })
     document.getElementById('senhaAtual').innerText = numeroSenha
-    document.removeChild(tabelaSenhas.tBodies[0].rows[0])
+    tabelaSenhas.tBodies[0].removeChild(tabelaSenhas.tBodies[0].rows[0])
 })

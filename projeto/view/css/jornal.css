@@ -1,0 +1,32 @@
+
+     
+       
+       body{overflow:hidden}
+       
+       /* @keyframes correr{
+            0% {transform: translateX(0%);}
+            100% {transform: translateX(-100%); margin-left:0%; }
+        } */
+
+        #jornal{
+            position:absolute;
+            bottom:0;
+            background-color:black;
+            padding-bottom:10px;
+            right: 0;
+            left:0;
+            font-size: 9vh;
+            height: calc(10vh + 10px);
+        }
+
+        #texto{
+            width: fit-content;
+            color:white;
+            display: block;
+            white-space:nowrap;
+            /* animation-name:correr;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            animation-duration: 10s; 
+            margin-left:100%;*/
+        }
