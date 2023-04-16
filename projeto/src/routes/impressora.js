@@ -12,13 +12,13 @@ router.get('/gerar/:prioridade?', async (req, res) => {
                 id: 'desc'
             }
         })
-        await prisma.senha.create({
+        let senha = await prisma.senha.create({
             data: {
                 numero: ultimaSenha.numero + 1,
                 prioritario: prioridade
             }
         })
-        res.send('Senha gerada')
+        res.json(senha)
     } catch (error) {
         console.log(error)
         res.send(error)

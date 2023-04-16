@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html,body{
+            height: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+</head>
+<body class="d-flex">
+    <div class="text-center d-flex m-auto flex-column">
+        <p>Seja bem-vindo!</p>
+        <div class="fw-bold fs-5">
+            <span id="data"></span> <span id="hora" class="ps-5"></span>
+        </div>
+        <h1>SENHA</h1>
+        <h1 id="senha" class="fw-1"></h1>
+        <p>Aguarde ser chamado no painel!</p>
+    </div>
+    <script>
+        let data = new Date();
+        let dia = data.getDate();
+        let mes = String(data.getMonth() + 1).padStart(2, "0");
+        let ano = data.getFullYear() % 100;
+        let hora = data.getHours();
+        let minuto = data.getMinutes();
+        let dataFormatada = dia + "/" + mes + "/" + ano;
+        let horaFormatada = hora + ":" + minuto
+        document.getElementById("data").innerHTML = dataFormatada;
+        document.getElementById("hora").innerHTML = horaFormatada;
+    </script>
+</body>
+</html>

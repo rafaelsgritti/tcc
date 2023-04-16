@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+</head>
+<body>
+
+    <div class="mb-3">
+      <label for="nome" class="form-label">Nome</label>
+      <input type="text"
+        class="form-control" name="nome" id="nome" placeholder="" disabled>
+    </div>
+
+    <div class="mb-3">
+        <label for="nome" class="form-label">Número</label>
+        <input type="text"
+          class="form-control" name="numero" id="numero" placeholder="" disabled>
+      </div>
+
+    <button type="button" id="novo" class="btn btn-primary">Novo</button>
+    <button type="button" id="editar" class="btn btn-primary" disabled>Editar</button>
+    <button type="button" id="salvar" class="btn btn-success" disabled>Salvar</button>
+    <button type="button" id="cancelar" class="btn btn-warning" disabled>Cancelar</button>
+    <button type="button" id="excluir" class="btn btn-danger" disabled>Excluir</button>
+    
+    <div class="mb-3">
+        <label for="selGuiche" class="form-label">Guichês:</label>
+        <select class="form-select form-select-lg" size="10" name="selGuiche" id="selGuiche">
+        </select>
+    </div>
+
+    <script>
+        const selGuiche = document.getElementById('selGuiche');
+        const nome = document.getElementById('nome');
+        const numero = document.getElementById('numero');
+
+        const btnNovo = document.getElementById('novo');
+        const btnEditar = document.getElementById('editar');
+        const btnSalvar = document.getElementById('salvar');
+        const btnCancelar = document.getElementById('cancelar');
+        const btnExcluir = document.getElementById('excluir');
+
+        let guiches = [];
+        async function getGuiches(){
+            guiches = await fetch('/api/guiche')
+            .then(response => response.json())
+            fillGuiches()
+        }
+
+        getGuiches();
+
+        function fillGuiches(){
+            selGuiche.innerHTML = '';
+            guiches.forEach(guiche => {
+                const option = document.createElement('option');
+                option.value = guiche.id;
+                option.innerText = guiche.nome;
+                selGuiche.appendChild(option);
+            });
+        }
+
+        selGuiche.addEventListener('change', (event) => {
+            nome.value = guiches.find(guiche => guiche.id == event.target.value).nome;
+            numero.value = guiches.find(guiche => guiche.id == event.target.value).numero;
+            btnEditar.removeAttribute('disabled');
+            btnExcluir.removeAttribute('disabled');
+            btnCancelar.setAttribute('disabled', true);
+            btnSalvar.setAttribute('disabled', true);
+            btnNovo.setAttribute('disabled', true);
+        });
+
+        
+
+        btnNovo.addEventListener('click', () => {
+            nome.value = '';
+            numero.value = '';
+            selGuiche.value = '';
+            nome.removeAttribute('disabled');
+            numero.removeAttribute('disabled');
+            nome.focus()
+            btnEditar.setAttribute('disabled', true);
+            btnExcluir.setAttribute('disabled', true);
+            btnCancelar.removeAttribute('disabled');
+            btnSalvar.removeAttribute('disabled');
+            btnNovo.setAttribute('disabled', true);
+        });
+
+        btnEditar.addEventListener('click', () => {
+            if(!selGuiche.value) return;
+            nome.removeAttribute('disabled');
+            numero.removeAttribute('disabled');
+            nome.focus()
+            btnEditar.setAttribute('disabled', true);
+            btnExcluir.setAttribute('disabled', true);
+            btnCancelar.removeAttribute('disabled');
+            btnSalvar.removeAttribute('disabled');
+            btnNovo.setAttribute('disabled', true);
+            
+        });
+
+        btnSalvar.addEventListener('click', () => {
+            if(!nome.value || !numero.value) return;
+            const guiche = {
+                nome: nome.value,
+                numero: numero.value
+            }
+            if(selGuiche.value != ''){
+                guiche.id = selGuiche.value;
+            };
+            
+            fetch('/api/guiche', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(guiche)
+            })
+            .then(response => response.json())
+            .then(data => {
+                getGuiches();
+                nome.value = '';
+                numero.value = '';
+                selGuiche.value = '';
+                nome.setAttribute('disabled', true);
+                numero.setAttribute('disabled', true);
+            })
+            btnCancelar.setAttribute('disabled', true);
+            btnSalvar.setAttribute('disabled', true);
+            btnNovo.removeAttribute('disabled');
+            btnExcluir.setAttribute('disabled', true);
+            btnEditar.setAttribute('disabled', true);
+        });
+
+        btnExcluir.addEventListener('click', () => {
+            if(!selGuiche.value) return;
+            let confirm = window.confirm('Deseja excluir o guichê ' + selGuiche.value + '?')
+            if(!confirm) return;
+            fetch('/api/guiche/' + selGuiche.value, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                getGuiches();
+                nome.value = '';
+                numero.value = '';
+                selGuiche.value = '';
+                nome.setAttribute('disabled', true);
+                numero.setAttribute('disabled', true);
+            })
+            btnCancelar.setAttribute('disabled', true);
+            btnSalvar.setAttribute('disabled', true);
+            btnNovo.removeAttribute('disabled');
+            btnExcluir.setAttribute('disabled', true);
+            btnEditar.setAttribute('disabled', true);
+        });
+
+        btnCancelar.addEventListener('click', () => {
+            nome.value = '';
+            numero.value = '';
+            selGuiche.value = '';
+            nome.setAttribute('disabled', true);
+            numero.setAttribute('disabled', true);
+            btnCancelar.setAttribute('disabled', true);
+            btnSalvar.setAttribute('disabled', true);
+            btnNovo.removeAttribute('disabled');
+            btnExcluir.setAttribute('disabled', true);
+            btnEditar.setAttribute('disabled', true);
+            
+        });
+
+    </script>
+</body>
+</html>
