@@ -1,7 +1,6 @@
 let senhaAtual = 0
 
-async function gerar(){
-    let prioridade = document.getElementById('prioridade').checked ? 1 : 0
+async function gerar(prioridade){
     let senha = await fetch(`/api/impressora/gerar/${prioridade}`).then(res=>res.json())
     senhaAtual = senha.numero
     printPage('/impressao.html')

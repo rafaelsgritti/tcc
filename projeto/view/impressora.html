@@ -7,14 +7,14 @@
     <title>Impressora</title>
     <link rel="stylesheet" href="./css/bootstrap.min.css">
     <script src="./js/impressora.js" defer></script>
+    <style>
+      html, body {
+        height: 100%;
+      }
+    </style>
 </head>
-<body>
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" value="1" id="prioridade">
-      <label class="form-check-label" for="">
-        Preferencial
-      </label>
-    </div>  
-    <button type="button" class="btn btn-primary" onclick="gerar()">Gerar</button>
+<body class="d-flex justify-content-center flex-column align-items-center gap-5 bg-dark-subtle" >
+        <button type="button" class="btn btn-primary w-50 fs-1 p-3 fw-bold" onclick="gerar(0)">Senha Normal</button>
+        <button type="button" class="btn btn-primary w-50 fs-1 p-3 fw-bold" onclick="gerar(1)">Senha Prioritária</button>
 </body>
 </html>
