@@ -12,6 +12,7 @@ model guiche {
   nome          String          @db.VarChar(45)
   numero        String          @db.VarChar(45)
   painel_chamar painel_chamar[]
+  senha         senha[]
 }
 
 model painel_chamar {
@@ -32,13 +33,9 @@ model senha {
   criada        DateTime        @default(now()) @db.DateTime(0)
   time_chamada  DateTime?       @db.DateTime(0)
   chamada       Boolean?        @default(false)
+  guiche_id     Int?
   painel_chamar painel_chamar[]
-}
+  guiche        guiche?         @relation(fields: [guiche_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "id_guiche")
 
-model user {
-  id       Int    @id @unique(map: "id_UNIQUE") @default(autoincrement())
-  nome     String @db.VarChar(45)
-  username String @unique(map: "username_UNIQUE") @db.VarChar(45)
-  password String @db.VarChar(255)
-  role     Int    @default(2)
+  @@index([guiche_id], map: "id_guiche_idx")
 }

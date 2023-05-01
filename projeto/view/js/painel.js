@@ -10,11 +10,9 @@ let duracao = 2
 
 let painel = {id:1}
 
-//getPainel()
 buscarSenha()
-//atualizarJornal()
-//atualizarTemp()
-//window.requestAnimationFrame(getHora)
+atualizarJornal()
+window.requestAnimationFrame(getHora)
 
 async function buscarSenha(){
     try{
@@ -76,21 +74,19 @@ async function piscar(){
 }
 
 
-// async function atualizarJornal(){
-//     try{
-//         let noticias = await getNoticias()
-//         if(noticias.length == 0) return
-//         let completo = noticias.join(' / ')
-//         spanJornal.innerText = completo
-//         duracao = completo.length / 3
-//         let animationKeyframes = [{"transform":"translateX(0%)","marginLeft":"100%"},{"transform":"translateX(-100%)","marginLeft":"0%"}]
-//         spanJornal.animate(animationKeyframes,{duration:duracao*1000,iterations:Infinity,fill:'forwards'})
-//     }catch(e){
-//         console.log(e)
-//         duracao = 2
-//     }
-//     window.setTimeout(atualizarJornal,(duracao*1000))
-// }
+async function atualizarJornal(){
+    try{
+        let texto = "Seja bem-vindo, aguarde ser chamado no painel."
+        spanJornal.innerText = texto
+        duracao = texto.length / 3
+        let animationKeyframes = [{"transform":"translateX(0%)","marginLeft":"100%"},{"transform":"translateX(-100%)","marginLeft":"0%"}]
+        spanJornal.animate(animationKeyframes,{duration:duracao*1000,iterations:Infinity,fill:'forwards'})
+    }catch(e){
+        console.log(e)
+        duracao = 2
+    }
+    window.setTimeout(atualizarJornal,(duracao*1000))
+}
 
 function sleep(ms){
     return new Promise(resolve=>setTimeout(resolve,ms))
@@ -101,11 +97,6 @@ function getHora(){
     window.requestAnimationFrame(getHora)
 }
 
-// async function atualizarTemp(){
-//     let dados = await getTemp()
-//     divTemperatura.innerHTML = `<img src="${dados.icon}"><span>${dados.temperatura}</span>`
-//     window.setTimeout(atualizarTemp,(15*60*1000))
-// }
 
 function tocarSom(){
     const campainha = new Audio('./bell.wav')

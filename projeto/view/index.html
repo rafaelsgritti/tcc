@@ -5,8 +5,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel Senha</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <style>
+        html,body{
+            height: 100%;
+        }
+    </style>
 </head>
-<body>
-    <h1>Teste Painel</h1>
+<body class="d-flex flex-column align-content-center h-100 justify-content-center gap-3">
+    <h3 class="text-center">Selecione a página que deseja acessar</h3>
+    <div class="d-flex flex-row align-content-center justify-content-center gap-3">
+        <a href="guiche" type="button" class="btn btn-primary align-self-center">Atendimento</a>
+        <a href="impressora" type="button" class="btn btn-primary align-self-center">Impressora</a>
+        <a href="painel" type="button" class="btn btn-primary align-self-center">Painel</a>
+        <a href="admin/guiche" type="button" class="btn btn-primary align-self-center">Administrador</a>
+        <a href="admin/relatorio" type="button" class="btn btn-primary align-self-center">Relatórios</a>
+    </div>
+    
 </body>
 </html>

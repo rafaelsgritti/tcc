@@ -4,10 +4,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Administrador</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <style>
+        .escondido{
+            display: none;
+        }
+        #logout{
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 10px;
+        }
+
+
+    </style>
 </head>
-<body>
+<body class="escondido p-5">
+
+    <button type="button" class="btn btn-danger" id="logout" onclick="logout()">Sair</button>
+
 
     <div class="mb-3">
       <label for="nome" class="form-label">Nome</label>
@@ -34,6 +50,9 @@
     </div>
 
     <script>
+
+        validar()
+
         const selGuiche = document.getElementById('selGuiche');
         const nome = document.getElementById('nome');
         const numero = document.getElementById('numero');
@@ -171,6 +190,32 @@
             btnEditar.setAttribute('disabled', true);
             
         });
+
+        function validar(){
+            if(localStorage.getItem('logged')=='true'){
+                document.body.classList.remove('escondido');
+                return
+            }
+            let password = prompt('Digite a senha de administrador');
+            if(password == null){
+                window.location.href = '/';
+                return
+            }
+            if(password != 'admin'){
+                alert('Senha incorreta!')
+                validar()
+            }
+            localStorage.setItem('logged', 'true');
+            document.body.classList.remove('escondido');
+        }
+
+        function logout(){
+            if(confirm('Deseja sair?')){
+                localStorage.removeItem('logged');
+            window.location.href = '/';
+            }
+            
+        }
 
     </script>
 </body>

@@ -30,7 +30,8 @@ router.post('/chamar', async (req, res) => {
             },
             data:{
                 chamada: true,
-                time_chamada: new Date()
+                time_chamada: new Date(),
+                guiche_id: guiche
             },
 
         })

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Relatórios</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <script src="./pdfmake.js" defer></script>
+    <script src="./vfs_fonts.js" defer></script>
+    <script src="../js/moment.js"></script>
+    <style>
+      .escondido {
+        display: none;
+      }
+
+      #logout {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body class="d-flex flex-column justify-content-center gap-3 mt-5 escondido">
+    <button type="button" class="btn btn-danger" id="logout" onclick="logout()">
+      Sair
+    </button>
+    <h3 class="text-center">Escolha as datas para gerar o relatório:</h3>
+    <div class="d-flex flex-row align-self-center gap-3 align-items-baseline">
+      <label for="inicial" class="form-label">Data inicial</label>
+      <input
+        type="date"
+        class="form-control w-auto"
+        name="inicial"
+        id="inicial"
+      />
+    </div>
+    <div class="d-flex flex-row align-self-center gap-3 align-items-baseline">
+      <label for="final" class="form-label">Data final</label>
+      <input type="date" class="form-control w-auto" name="final" id="final" />
+    </div>
+    <button
+      type="button"
+      id="btnRelatorio"
+      class="btn btn-success align-self-center"
+    >
+      Gerar relatório
+    </button>
+
+    <script>
+      validar();
+
+      const btnRelatorio = document.getElementById("btnRelatorio");
+      const inicial = document.getElementById("inicial");
+      const final = document.getElementById("final");
+
+      btnRelatorio.addEventListener("click", async () => {
+        if (inicial.value == "" || final.value == "") {
+          alert("Preencha as datas");
+        } else {
+          let data = await fetch(`http://localhost/api/relatorio/`, {
+            method: "POST",
+            headers: new Headers({ "Content-type": "application/json" }),
+            body: JSON.stringify({
+              inicial: inicial.value,
+              final: final.value,
+            }),
+          }).then((res) => {
+            if (res.status == 200) {
+              return res.json();
+            } else {
+              return res.text();
+            }
+          });
+          if (typeof data == "string") {
+            alert(data);
+          } else {
+            let def = {
+              header: {
+                text: `Relatório de atendimentos: ${moment(
+                  inicial.value
+                ).format("DD/MM")} - ${moment(final.value).format("DD/MM")}`,
+                alignment: "center",
+                margin: [0, 5],
+              },
+              content: [
+                {
+                  columns: [
+                    { width: "*", text: "" },
+                    {
+                      width: "auto",
+                      table: {
+                        body: [
+                          [
+                            "Número da senha",
+                            "Hora da criação",
+                            "Hora chamada",
+                            "Prioritária",
+                            "Guichê",
+                            "Tempo de espera",
+                          ],
+                          ...data.map((e) => [
+                            e.numero,
+                            moment(e.criada).format("HH:mm:ss"),
+                            moment(e.time_chamada).format("HH:mm:ss"),
+                            e.prioritario ? "sim" : "não",
+                            e.guiche.numero,
+                            moment(e.time_chamada).diff(
+                              moment(e.criada),
+                              "minutes"
+                            ) + " minutos",
+                          ]),
+                        ],
+                        alignment: "center",
+                        margin: ["auto", "auto"],
+                      },
+                    },
+                    { width: "*", text: "" },
+                  ],
+                },
+              ],
+              pageOrientation: "landscape",
+              defaultStyle: {
+                fontSize: 15,
+                bold: true,
+              },
+            };
+
+            pdfMake
+              .createPdf(def)
+              .download(
+                `relatorio ${moment(inicial.value).format("DD-MM")} a ${moment(
+                  final.value
+                ).format("DD-MM")}.pdf`
+              );
+            inicial.value = "";
+            final.value = "";
+          }
+        }
+      });
+
+      function validar() {
+        if (localStorage.getItem("logged") == "true") {
+          document.body.classList.remove("escondido");
+          return;
+        }
+        let password = prompt("Digite a senha de administrador");
+        if (password == null) {
+          window.location.href = "/";
+          return;
+        }
+        if (password != "admin") {
+          alert("Senha incorreta!");
+          validar();
+        }
+        localStorage.setItem("logged", "true");
+        document.body.classList.remove("escondido");
+      }
+
+      function logout() {
+        if (confirm("Deseja sair?")) {
+          localStorage.removeItem("logged");
+          window.location.href = "/";
+        }
+      }
+    </script>
+  </body>
+</html>
